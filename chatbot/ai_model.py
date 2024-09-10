@@ -1,28 +1,12 @@
-import openai
-import os
+from transformers import pipeline
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
+# Initialize the Hugging Face model
+generator = pipeline('text-generation', model='gpt2')
 
 def generate_huggingface_response(user_input):
-    pass
-
-
-def generate_openai_response(user_input):
-    pass
-
-
-def generate_response(user_input):
     try:
-        # Create a chat completion
-        response = openai.ChatCompletion.create(
-            model='gpt-3.5-turbo',
-            messages=[
-                {"role": "user", "content": user_input}
-            ]
-        )
-        # Access the response content
-        return response.choices[0]['message']['content'].strip()
+        # Generate a response
+        response = generator(user_input, max_length=50, num_return_sequences=1)
+        return response[0]['generated_text'].strip()
     except Exception as e:
-        return f"An error occurred: {e}"
-
-print(generate_response("Guten tag! How are you?"))
+        return f"Error generating response: {str(e)}"
