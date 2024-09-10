@@ -5,6 +5,19 @@
 </head>
 <body>
     <h1>Welcome to SmartBot</h1>
+    <form method='post' action="{% url 'chatbot' %}">
+        {% csrf_token %}
+        <textarea name="user_input" rows="4" cols="50"></textarea><br>
+        <select name="ai_choice">
+            <option value="openai">OpenAI</option>
+            <option value="huggingface">HuggingFace</option>
+        </select><br>
+        <button type="submit">Submit</button>
+    </form>
+    {% if response %}
+        <h2>Response:</h2>
+        <p>{{ response }}</p>
+        {% endif %}
     <p>This will be the chatbot interface.</p>
 </body>
 </html>
