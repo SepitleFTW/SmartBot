@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from .ai_model import generate_huggingface_response
 from .openai_model import generate_openai_response
 
+def index(request):
+    return render(request, 'chatbot/index.html')
+
+
 def chatbot_view(request):
     response = ""
     if request.method == 'POST':
