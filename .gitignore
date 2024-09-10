@@ -1,4 +1,5 @@
 .env
-myenv
-*.so
-*.so.2
+<<<<<<< HEAD
+myenv/
+=======
+>>>>>>> 3c64a5d7dd991056716409f1a8efe3cc9c005275
