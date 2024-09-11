@@ -16,7 +16,7 @@ def chatbot_view(request):
             response = 'Please enter some text.'
         else:
             try:
-                response = generate_response(user_input, model=ai_choice)
+                response = generate_response(user_input, model_choice=ai_choice)
             except Exception as e:
                 response = f"Error generating a valid response {str(e)}"
 
