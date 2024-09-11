@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .ai_model import generate_huggingface_response
-from .openai_model import generate_openai_response
+from .ai_model import generate_response
 
 def index(request):
     return render(request, 'chatbot/index.html')
@@ -17,13 +16,8 @@ def chatbot_view(request):
             response = 'Please enter some text.'
         else:
             try:
-                if ai_choice == 'huggingface':
-                    response = generate_huggingface_response(user_input)
-                elif ai_choice == 'openai':
-                    response = generate_openai_response(user_input)
-                else:
-                    response = 'Invalid AI choice.'
+                response = generate_response(user_input, model=ai_choice)
             except Exception as e:
-                response = f"Error generating response: {str(e)}"
+                response = f"Error generating a valid response {str(e)}"
 
     return render(request, 'chatbot/index.html', {'response': response})

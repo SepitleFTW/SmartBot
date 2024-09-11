@@ -26,9 +26,9 @@ def generate_openai_response(user_input):
         relevant GPT model(might have to purchas)
         """
         response = openai.ChatCompletion.create(
-        model='gpt-3.5-turb',
+        model='gpt-3.5-turbo',
         messages=[
-            {"role": "user", "content": user_type}
+            {"role": "user", "content": user_input}
         ]
     )
         #access the response
