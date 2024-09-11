@@ -10,7 +10,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 huggingface_token = os.getenv('HUGGINGFACE_TOKEN')
 
 # Initialize the Hugging Face model
-generator = pipeline('text-generation', model='gpt2', token=huggingface_token)
+generator = pipeline('text-generation', model='gpt2', token=huggingface_token, temperature=0.2)
 
 # Response generation for Hugging Face model
 def generate_huggingface_response(user_input):
