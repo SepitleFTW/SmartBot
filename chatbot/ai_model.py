@@ -1,49 +1,50 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 from transformers import pipeline
-
-# Initialize the Hugging Face model
-generator = pipeline('text-generation', model='gpt2')
-
-def generate_huggingface_response(user_input):
-    try:
-        # Generate a response
-        response = generator(user_input, max_length=50, num_return_sequences=1)
-        return response[0]['generated_text'].strip()
-    except Exception as e:
-        return f"Error generating response: {str(e)}"
-=======
-=======
->>>>>>> 3c64a5d7dd991056716409f1a8efe3cc9c005275
 import openai
 import os
 
+#initing the huggingface model
+generator = pipeline('text-generation', model='gpt-2')
+
+#response generation for hugging face model
+def generate_huggingface_response(user_input):
+    try:
+        """
+        generate a response form HF GPT-2 model
+        """
+        response = generator(user_input, max_length=50, num_return_sequences=1)
+        return response[0]['generated_text'].strip()
+    except Exception as e:
+        return f"Error generating Hugging Face response: {str(e)}"
+
+# OpenAI API key setting
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-def generate_huggingface_response(user_input):
-    pass
-
-
+# response generation from OPENAI
 def generate_openai_response(user_input):
-    pass
-
-
-def generate_response(user_input):
     try:
-        # Create a chat completion
+        """getting a response from OPEN ai using
+        relevant GPT model(might have to purchas)
+        """
         response = openai.ChatCompletion.create(
-            model='gpt-3.5-turbo',
-            messages=[
-                {"role": "user", "content": user_input}
-            ]
-        )
-        # Access the response content
+        model='gpt-3.5-turb',
+        messages=[
+            {"role": "user", "content": user_type}
+        ]
+    )
+        #access the response
         return response.choices[0]['message']['content'].strip()
     except Exception as e:
-        return f"An error occurred: {e}"
+        return f"Error generating OPENAI response {str(e)}"
 
-print(generate_response("Guten tag! How are you?"))
-<<<<<<< HEAD
->>>>>>> 3c64a5d7dd991056716409f1a8efe3cc9c005275
-=======
->>>>>>> 3c64a5d7dd991056716409f1a8efe3cc9c005275
+#this function below allows to choose betweeen both Models
+def generate_response(user_input, model_choice='openai'):
+    if model_choice == 'huggingface':
+        return generate_huggingface_response(user_input)
+    elif model_choice == 'openai':
+        return generate_openai_response(user_input)
+    else:
+        return "Invalid model choice"
+
+#an example
+print(generate_response("Guten tag! How are you?", model_choice='openai'))
+print(generate_response("Guten tag! How are you?", model_choice='huggingface'))
