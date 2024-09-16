@@ -1,0 +1,11 @@
+<!-- template for conversations -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Conversation Log</h2>
+<ul>
+    {% for conversations in convo %}
+    <li>{{ convo.timestamp }}: You: {{ convo.message }} | Bot: {{ convo.response }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

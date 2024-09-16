@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SmartBot{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'chatbot/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>SmartBot Dashboard</h1>
+        <nav>
+            <a href="{% url 'user_data' %}">User Data</a>
+            <a href="{% url 'conversation_logs' %}">Conversation Logs</a>
+        </nav>
+    </header>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>© 2024 SmartBot</p>
+    </footer>
+</body>
+</html>
