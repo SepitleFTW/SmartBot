@@ -39,3 +39,12 @@ def chatbot_view(request):
                 response = f"Error generating a valid response {str(e)}"
 
     return render(request, 'chatbot/index.html', {'response': response})
+
+def conversation_logs(request):
+    # Logic to retrieve and display conversation logs
+    return render(request, 'chatbot/conversation_logs.html')
+
+def user_data(request):
+    # Your logic for displaying user data
+    return render(request, 'chatbot/user_data.html')
+
