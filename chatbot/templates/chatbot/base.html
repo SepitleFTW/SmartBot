@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SmartBot{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'chatbot/css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'chatbot/css/index.css' %}"
+    <link rel="stylesheet" href="{% static 'chatbot/css/index.css' %}">
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
 </head>
 <body>
     <header>
@@ -24,5 +25,34 @@
     <footer>
         <p>© 2024 SmartBot</p>
     </footer>
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/chat/');
+
+        const form = document.getElementById('chat-form');
+        const messages = document.getElementById('messages');
+
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('user-input').value;
+            const aiChoice = document.getElementById('ai-choice').value;
+            
+            socket.send(JSON.stringify({
+                'text': userInput,
+                'ai_choice': aiChoice
+            }));
+            document.getElementById('user-input').value = '';
+        };
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const messageElement = document.createElement('div');
+            messageElement.textContent = data.message;
+            messages.appendChild(messageElement);
+        };
+
+        socket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+    </script>
 </body>
 </html>
