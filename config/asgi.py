@@ -13,13 +13,11 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import chatbot.routing
 
-
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = ProtocolTypeRouter({
-    'http': get_asgi_application(),
-    'websocket': AuthMiddleWareStack(
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
         URLRouter(
             chatbot.routing.websocket_urlpatterns
         )
