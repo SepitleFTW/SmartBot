@@ -48,3 +48,6 @@ def user_data(request):
     # Your logic for displaying user data
     return render(request, 'chatbot/user_data.html')
 
+def chat_view(request):
+    return render(request, 'chatbot/chat.html')
+

@@ -1,12 +1,20 @@
 <!-- chat template -->
-{% extends 'base.html' %}
+{% extends 'chatbot/base.html' %}
+
+{% block title %}Chat{% endblock %}
 
 {% block content %}
-<h2>Chat with SmartBot</h2>
-<form method="post">
-    {% csrf_token %}
-    <textarea name='message' rows='4' cols='50'></textarea>
-    <br>
-    <button type="submit">Send</button>
-</form>
+<div class='chat-interface'>
+    <div class='chat-header'>
+        <h1>Chatbot</h1>
+    </div>
+    <div class='chat-box'>
+        <div class='message bot-message'>Hi! How can I assist you?</div>
+        <div class='message user-message'>I need help with a certain query.</div>
+    </div>
+    <div class='chat-input'>
+        <input type='text' placeholder='Type a message...'>
+        <button>Send</button>
+    </div>
+</div>
 {% endblock %}
