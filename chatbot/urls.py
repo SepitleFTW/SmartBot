@@ -6,6 +6,6 @@ urlpatterns = [
     path('chat/', views.chatbot_view, name='chatbot'),
     path('conversation_logs/', views.conversation_logs, name='conversation_logs'),
     path('user-data/', views.user_data, name='user_data'),
-    path('chat/', views.chat_view, name='chat'),
+    path('chat/', views.chat_view, name='chat_view'),
 
 ]

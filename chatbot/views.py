@@ -1,29 +1,37 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .ai_model import generate_response
 from .models import User, Convo
-from .services import generate_response
 
 def save_convo(user_id, user_message, bot_response):
     """
-    these functions will save and rettrieve conversations
+    Save the conversation to the database.
     """
-    user = User.objects.get(id=user.id)
-    Convo.objects.create(
-        user=user,
-        message=user_message,
-        response=bot_response
-    )
-
+    try:
+        user = User.objects.get(id=user_id)
+        Convo.objects.create(
+            user=user,
+            message=user_message,
+            response=bot_response
+        )
+    except User.DoesNotExist:
+        logging.error(f"User with id {user_id} does not exist.")
+    except Exception as e:
+        logging.error(f"Error saving conversation: {str(e)}")
 
 def get_convo(user_id):
-    """this function as stated above will get the convos in history
     """
-    user = User.objects.get(id=user_id)
-    return Convo.objects.filter(user=user).order_by('-timestamp')
+    Retrieve conversation history for a specific user.
+    """
+    try:
+        user = User.objects.get(id=user_id)
+        return Convo.objects.filter(user=user).order_by('-timestamp')
+    except User.DoesNotExist:
+        logging.error(f"User with id {user_id} does not exist.")
+        return Convo.objects.none()  # Return an empty queryset if user does not exist
+
 def index(request):
     return render(request, 'chatbot/index.html')
-
 
 def chatbot_view(request):
     response = ""
@@ -37,7 +45,7 @@ def chatbot_view(request):
             try:
                 response = generate_response(user_input, model_choice=ai_choice)
             except Exception as e:
-                response = f"Error generating a valid response {str(e)}"
+                response = f"Error generating a valid response: {str(e)}"
 
     return render(request, 'chatbot/index.html', {'response': response})
 
@@ -55,6 +63,5 @@ def chat_view(request):
         response_text = generate_response(user_input)
 
         return JsonResponse({'response': response_text})
-    
-    return render(request, 'chatbot/chat.html')
 
+    return render(request, 'chatbot/chat.html')

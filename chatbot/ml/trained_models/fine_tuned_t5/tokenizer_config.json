@@ -1,0 +1,16 @@
+{
+    "model_max_length": 512,
+    "do_lower_case": false,
+    "bos_token": "<s>",
+    "eos_token": "</s>",
+    "unk_token": "<unk>",
+    "pad_token": "<pad>",
+    "sep_token": "</s>",
+    "cls_token": "<s>",
+    "mask_token": "<mask>",
+    "special_tokens_map_file": null,
+    "tokenizer_class": "T5Tokenizer",
+    "name_or_path": "t5-small",
+    "fast_tokenizer": true,
+    "use_fast": true
+  }
