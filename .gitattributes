@@ -1,3 +1,4 @@
 *.so filter=lfs diff=lfs merge=lfs -text
 *.so.2 filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
+*.results filter=lfs diff=lfs merge=lfs -text
