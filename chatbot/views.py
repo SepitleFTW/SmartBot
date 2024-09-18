@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .ai_model import generate_response
 from .models import User, Convo
+from .services import generate_response
 
 def save_convo(user_id, user_message, bot_response):
     """
@@ -49,5 +50,11 @@ def user_data(request):
     return render(request, 'chatbot/user_data.html')
 
 def chat_view(request):
+    if request.method == 'POST':
+        user_input = request.POST.get('text')
+        response_text = generate_response(user_input)
+
+        return JsonResponse({'response': response_text})
+    
     return render(request, 'chatbot/chat.html')
 
