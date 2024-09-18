@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import logging
 import nltk
 from nltk.tokenize import word_tokenize
-
+from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 #configuring logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -78,3 +78,13 @@ def generate_response(user_input, model_choice='openai'):
         return generate_openai_response(user_input)
     else:
         return "Invalid model choice"
+
+
+#loading the fine tuned model
+model = T5ForConditionalGeneration.from_pretrained('chatbot/ml/trained_models/fine_tuned_t5')
+tokenizer = T5Tokenizer.from_pretrained('t5-small')
+
+def generate_response(input_text):
+    inputs = tokenizer(input_text, return_tensors='pt')
+    outputs = model.generate(**inputs)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)

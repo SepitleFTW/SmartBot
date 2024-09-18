@@ -1,0 +1,42 @@
+[
+    {
+        "input_text": "What is the catch in rowing?",
+        "target_text": "The catch is the moment in the rowing stroke when the rower’s blade enters the water."
+    },
+    {
+        "input_text": "What is the best technique for a powerful stroke?",
+        "target_text": "A powerful stroke involves a strong drive phase, engaging the legs, back, and arms in sequence. Proper technique and timing are crucial."
+    },
+    {
+        "input_text": "Can you explain the difference between sculling and sweep rowing?",
+        "target_text": "Sculling involves each rower using two oars, one in each hand. In sweep rowing, each rower uses only one oar, with both hands on the same oar."
+    },
+    {
+        "input_text": "What type of boat is used for sculling?",
+        "target_text": "In sculling, rowers typically use single, double, or quadruple sculls."
+    },
+    {
+        "input_text": "What are the most common injuries in rowing?",
+        "target_text": "Common rowing injuries include lower back pain, wrist tendonitis, and rib stress fractures, often due to overuse or poor technique."
+    },
+    {
+        "input_text": "Who is the most famous rower in history?",
+        "target_text": "One of the most famous rowers is Sir Steve Redgrave, who won five consecutive Olympic gold medals for Great Britain from 1984 to 2000."
+    },
+    {
+        "input_text": "How should I train for rowing?",
+        "target_text": "Rowing training should include endurance rowing sessions, strength training, and high-intensity interval training (HIIT) to improve both stamina and power."
+    },
+    {
+        "input_text": "What is an erg?",
+        "target_text": "An erg, or ergometer, is a rowing machine that simulates rowing on water and is commonly used for training indoors."
+    },
+    {
+        "input_text": "What are the four phases of the rowing stroke?",
+        "target_text": "The four phases of the rowing stroke are the catch, the drive, the finish, and the recovery."
+    },
+    {
+        "input_text": "How does weather affect rowing?",
+        "target_text": "Weather conditions such as wind, rain, and current can greatly affect rowing. Calm water is ideal, while strong wind and current can make rowing more challenging."
+    }
+]
