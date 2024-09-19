@@ -2,6 +2,7 @@
 *.so.2 filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.results filter=lfs diff=lfs merge=lfs -text
-*.ml/trained_models/checkpoint-2 filter=lfs diff=lfs merge=lfs -text
-ml/trained_models/* filter=lfs diff=lfs merge=lfs -text
-results/* filter=lfs diff=lfs merge=lfs -text
+ml/trained_models/** filter=lfs diff=lfs merge=lfs -text
+results/** filter=lfs diff=lfs merge=lfs -text
+ml/trained_models/checkpoint-2/model.safetensors filter=lfs diff=lfs merge=lfs -text
+ml/trained_models/checkpoint-2/optimizer.pt filter=lfs diff=lfs merge=lfs -text
