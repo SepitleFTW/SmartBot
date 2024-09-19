@@ -1,21 +1,21 @@
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Trainer, TrainingArguments
-from datasets import Dataset
-import pandas as pd
-import json
+from datasets import load_dataset
+import os
 
 # Load tokenizer and model
 tokenizer = T5Tokenizer.from_pretrained('t5-small')
 model = T5ForConditionalGeneration.from_pretrained('t5-small')
 
-# Load dataset manually
-with open('chatbot/ml/learning.json', 'r') as f:
-    data = json.load(f)
+# Define the path to your JSON file
+data_path = "/workspaces/SmartBot/chatbot/ml/learning.json"
 
-# Convert data into a pandas DataFrame, then into a Hugging Face Dataset
-dataset = Dataset.from_pandas(pd.DataFrame(data))
+# Load the custom dataset (JSON)
+dataset = load_dataset('json', data_files={'train': data_path})
 
-# Split dataset into train and test
-dataset = dataset.train_test_split(test_size=0.1)
+# Split the dataset into training and validation sets
+split_dataset = dataset['train'].train_test_split(test_size=0.1, seed=42)
+train_dataset = split_dataset['train']
+test_dataset = split_dataset['test']
 
 # Preprocess the dataset by tokenizing inputs and targets
 def preprocess_function(examples):
@@ -29,7 +29,8 @@ def preprocess_function(examples):
     return model_inputs
 
 # Apply the preprocessing to the dataset
-tokenized_datasets = dataset.map(preprocess_function, batched=True)
+train_dataset = train_dataset.map(preprocess_function, batched=True)
+test_dataset = test_dataset.map(preprocess_function, batched=True)
 
 # Define training arguments
 training_args = TrainingArguments(
@@ -46,10 +47,15 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=tokenized_datasets['train'],
-    eval_dataset=tokenized_datasets['test'],  # Using the split test set
+    train_dataset=train_dataset,
+    eval_dataset=test_dataset
 )
 
 # Start training
 trainer.train()
 
+# Save the fine-tuned model and tokenizer
+model_save_path = '/workspaces/SmartBot/chatbot/ml/trained_models/fine_tuned_t5'
+os.makedirs(model_save_path, exist_ok=True)
+model.save_pretrained(model_save_path)
+tokenizer.save_pretrained(model_save_path)
