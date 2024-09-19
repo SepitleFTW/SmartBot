@@ -38,3 +38,7 @@ trainer.train()
 
 # Save the fine-tuned model
 trainer.save_model('./ml/trained_models/fine_tuned_t5')
+
+# Save the fine-tuned model
+model.save_pretrained('chatbot/ml/trained_models/fine_tuned_t5')
+tokenizer.save_pretrained('chatbot/ml/trained_models/fine_tuned_t5')
