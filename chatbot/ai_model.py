@@ -22,7 +22,7 @@ huggingface_token = os.getenv('HUGGINGFACE_TOKEN')
 generator = pipeline('text-generation', model='gpt2', token=huggingface_token, temperature=0.7)
 
 # Initialize T5 model and tokenizer
-t5_model_path = 'chatbot/ml/trained_models/fine_tuned_t5'
+t5_model_path = '/workspaces/SmartBot/chatbot/ml/trained_models/fine_tuned_t5'
 t5_model = T5ForConditionalGeneration.from_pretrained(t5_model_path)
 t5_tokenizer = T5Tokenizer.from_pretrained(t5_model_path)
 
