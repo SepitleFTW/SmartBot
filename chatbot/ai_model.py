@@ -71,6 +71,20 @@ def generate_response(user_input, model_choice='openai'):
 
 # Generate response using the fine-tuned T5 model
 def generate_t5_response(input_text):
-    inputs = t5_tokenizer(input_text, return_tensors='pt')
-    outputs = t5_model.generate(**inputs)
+    # Format the input for the model
+    formatted_input = f"question: {input_text}" 
+    inputs = t5_tokenizer(formatted_input, return_tensors='pt')
+    
+    #checks input length
+    input_ids = inputs.input_ids
+    print("Input length:", input_ids.shape[1])
+    
+    outputs = t5_model.generate(
+        **inputs,
+        max_length=50,
+        num_beams=5,
+        num_return_sequences=1,
+        early_stopping=True
+    )
+    
     return t5_tokenizer.decode(outputs[0], skip_special_tokens=True)
