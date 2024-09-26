@@ -21,9 +21,9 @@
         <form id="chat-form">
             <textarea id="user-input" rows="4" cols="50"></textarea><br>
             <select id="ai-choice">
-                <option value="openai">OpenAI</option>
+                
                 <option value="huggingface">HuggingFace</option>
-                <option value="t5">T5</option>
+                
             </select><br>
             <button type="submit">Send</button>
         </form>
@@ -35,32 +35,36 @@
     </footer>
     <script>
         const socket = new WebSocket('ws://' + window.location.host + '/ws/chat/');
-
+    
         const form = document.getElementById('chat-form');
         const messages = document.getElementById('messages');
-
+    
         form.onsubmit = function(e) {
             e.preventDefault();
             const userInput = document.getElementById('user-input').value;
             const aiChoice = document.getElementById('ai-choice').value;
-
+    
+            //
+            messages.innerHTML = ''; // This line clears previous messages
+    
             socket.send(JSON.stringify({
                 'text': userInput,
                 'ai_choice': aiChoice
             }));
-            document.getElementById('user-input').value = '';
+            document.getElementById('user-input').value = ''; // Reset the input field
         };
-
+    
         socket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const messageElement = document.createElement('div');
             messageElement.textContent = data.message;
             messages.appendChild(messageElement);
         };
-
+    
         socket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
     </script>
+    
 </body>
 </html>

@@ -43,7 +43,15 @@ def generate_huggingface_response(user_input):
     logging.info(f"Generating Hugging Face response for input: {user_input}")
     try:
         user_input = preprocess_text(user_input)
-        response = generator(user_input, max_length=50, num_return_sequences=1)  # Response generation using HF model
+        response = generator(
+            user_input, 
+            max_length=50, 
+            num_return_sequences=1, 
+            temperature=0.3,
+            truncation=True,
+            pad_token_id=t5_tokenizer.eos_token_id
+        )
+         
         return response[0]['generated_text'].strip()
     except Exception as e:
         logging.error(f"Error generating Hugging Face response: {str(e)}")
@@ -89,7 +97,7 @@ def generate_t5_response(input_text):
     try:
         outputs = t5_model.generate(
             **inputs,
-            max_length=50,
+            max_length=20,
             num_beams=5,
             num_return_sequences=1,
             early_stopping=True
