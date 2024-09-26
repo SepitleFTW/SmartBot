@@ -4,15 +4,17 @@ import os
 from dotenv import load_dotenv
 import logging
 import nltk
-from nltk.tokenize import word_tokenize
 
 # Configuring logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 load_dotenv()  # Loading env variables from .env file
 
-# Downloading the necessary NLTK data
-nltk.download('punkt')
+# Downloading the necessary NLTK data, specifically 'punkt' tokenizer
+try:
+    nltk.download('punkt', quiet=True)
+except Exception as e:
+    logging.error(f"Error downloading NLTK data: {str(e)}")
 
 # API keys from env file
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -28,8 +30,13 @@ t5_tokenizer = T5Tokenizer.from_pretrained(t5_model_path)
 
 # Preprocessing function
 def preprocess_text(text):
-    tokens = word_tokenize(text.lower())  # Lowercase and tokenize text
-    return ' '.join(tokens)
+    # Lowercase and tokenize text using the 'punkt' tokenizer
+    try:
+        tokens = nltk.word_tokenize(text.lower())
+        return ' '.join(tokens)
+    except Exception as e:
+        logging.error(f"Error during tokenization: {str(e)}")
+        return text  # Return the original text if tokenization fails
 
 # Response generation for Hugging Face model
 def generate_huggingface_response(user_input):
@@ -44,7 +51,7 @@ def generate_huggingface_response(user_input):
 
 # Response generation from OpenAI
 def generate_openai_response(user_input):
-    logging.info(f"Generating OpenAi response for input: {user_input}")
+    logging.info(f"Generating OpenAI response for input: {user_input}")
     try:
         user_input = preprocess_text(user_input)
         response = openai.ChatCompletion.create(
@@ -74,17 +81,20 @@ def generate_t5_response(input_text):
     # Format the input for the model
     formatted_input = f"question: {input_text}" 
     inputs = t5_tokenizer(formatted_input, return_tensors='pt')
-    
-    #checks input length
+
+    # Checks input length
     input_ids = inputs.input_ids
     print("Input length:", input_ids.shape[1])
-    
-    outputs = t5_model.generate(
-        **inputs,
-        max_length=50,
-        num_beams=5,
-        num_return_sequences=1,
-        early_stopping=True
-    )
-    
-    return t5_tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    try:
+        outputs = t5_model.generate(
+            **inputs,
+            max_length=50,
+            num_beams=5,
+            num_return_sequences=1,
+            early_stopping=True
+        )
+        return t5_tokenizer.decode(outputs[0], skip_special_tokens=True)
+    except Exception as e:
+        logging.error(f"Error generating T5 response: {str(e)}")
+        return f"Error generating T5 response: {str(e)}"
