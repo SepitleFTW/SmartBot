@@ -20,13 +20,13 @@ except Exception as e:
 # API keys from env file
 openai.api_key = os.getenv('OPENAI_API_KEY')
 huggingface_token = os.getenv('HUGGINGFACE_TOKEN')
-gemini_api = os.getenv('GEMINI_API')
+gemini_api = os.getenv('GEMINI_API_KEY')
 
 #setting up gemini client
 #gemini_client = gemini.Client(api_key=gemini_api)
 
 #Initializing the gemini model
-model = genai.GenerativeModel(model_name='gemini-pro-vision')
+gemini_model = genai.GenerativeModel(model_name='gemini-pro-vision')
 
 # Initialize the Hugging Face model
 generator = pipeline('text-generation', model='gpt2', token=huggingface_token, temperature=0.7)
@@ -110,7 +110,7 @@ def generate_gemini_response(user_input):
     calling the gemini API and getting a response
     """
     try:
-        response = model.generate_conversation(prompt=user_input)
+        response = gemini_model.generate_conversation(prompt=user_input)
         return response['response']
     except Exception as e:
         logging.error(f"There was an unkown error generating Gemini response: {str(e)}")
