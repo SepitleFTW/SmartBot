@@ -33,7 +33,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # Process the message and get a response from the AI
             response = await self.get_ai_response(message, ai_choice)
 
-            # Send the response to the WebSocket
+            # Sending the response to the WebSocket
             await self.channel_layer.group_send(
                 "chat_group",
                 {

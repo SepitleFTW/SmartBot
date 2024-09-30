@@ -1,3 +1,4 @@
+import google.generativeai as genai
 from transformers import pipeline, T5Tokenizer, T5ForConditionalGeneration
 import openai
 import os
@@ -19,6 +20,13 @@ except Exception as e:
 # API keys from env file
 openai.api_key = os.getenv('OPENAI_API_KEY')
 huggingface_token = os.getenv('HUGGINGFACE_TOKEN')
+gemini_api = os.getenv('GEMINI_API')
+
+#setting up gemini client
+#gemini_client = gemini.Client(api_key=gemini_api)
+
+#Initializing the gemini model
+model = genai.GenerativeModel(model_name='gemini-pro-vision')
 
 # Initialize the Hugging Face model
 generator = pipeline('text-generation', model='gpt2', token=huggingface_token, temperature=0.7)
@@ -47,7 +55,7 @@ def generate_huggingface_response(user_input):
             user_input, 
             max_length=50, 
             num_return_sequences=1, 
-            temperature=0.3,
+            temperature=1,
             truncation=True,
             pad_token_id=t5_tokenizer.eos_token_id
         )
@@ -73,16 +81,6 @@ def generate_openai_response(user_input):
         logging.error(f"Error generating OpenAI Response: {str(e)}")
         return f"Error generating OpenAI response: {str(e)}"
 
-# This function allows choosing between both models
-def generate_response(user_input, model_choice='openai'):
-    if model_choice == 'huggingface':
-        return generate_huggingface_response(user_input)
-    elif model_choice == 'openai':
-        return generate_openai_response(user_input)
-    elif model_choice == 't5':
-        return generate_t5_response(user_input)
-    else:
-        return "Invalid model choice"
 
 # Generate response using the fine-tuned T5 model
 def generate_t5_response(input_text):
@@ -106,3 +104,28 @@ def generate_t5_response(input_text):
     except Exception as e:
         logging.error(f"Error generating T5 response: {str(e)}")
         return f"Error generating T5 response: {str(e)}"
+
+def generate_gemini_response(user_input):
+    """
+    calling the gemini API and getting a response
+    """
+    try:
+        response = model.generate_conversation(prompt=user_input)
+        return response['response']
+    except Exception as e:
+        logging.error(f"There was an unkown error generating Gemini response: {str(e)}")
+        return f"There was an unkown  error generating Gemini response: {str(e)}"
+
+
+# This function allows choosing between both models
+def generate_response(user_input, model_choice='openai'):
+    if model_choice == 'huggingface':
+        return generate_huggingface_response(user_input)
+    elif model_choice == 'openai':
+        return generate_openai_response(user_input)
+    elif model_choice == 't5':
+        return generate_t5_response(user_input)
+    elif model_choice == 'gemini':
+        return generate_gemini_response(user_input)
+    else:
+        return "Invalid model choice"

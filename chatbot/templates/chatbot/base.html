@@ -11,19 +11,17 @@
 <body>
     <header>
         <h1>SmartBot Dashboard</h1>
-        <nav>
-            <a href="{% url 'user_data' %}">User Data</a>
-            <a href="{% url 'conversation_logs' %}">Conversation Logs</a>
-        </nav>
+       
     </header>
-
+    
     <div class="content">
         <form id="chat-form">
             <textarea id="user-input" rows="4" cols="50"></textarea><br>
             <select id="ai-choice">
-                
+                <option value="openai">OpenAI</option> 
                 <option value="huggingface">HuggingFace</option>
-                
+                <option value="t5">T5</option>
+                <option value="gemini">Gemini</option>
             </select><br>
             <button type="submit">Send</button>
         </form>
@@ -39,6 +37,7 @@
         const form = document.getElementById('chat-form');
         const messages = document.getElementById('messages');
     
+
         form.onsubmit = function(e) {
             e.preventDefault();
             const userInput = document.getElementById('user-input').value;
