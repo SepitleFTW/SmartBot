@@ -37,7 +37,7 @@ def chatbot_view(request):
     response = ""
     if request.method == 'POST':
         user_input = request.POST.get('user_input', '').strip()
-        ai_choice = request.POST.get('ai_choice', 'openai')  # Default to OpenAI
+        ai_choice = request.POST.get('ai_choice', 'gemini')  # Default to gemini
 
         if not user_input:
             response = 'Please enter some text.'

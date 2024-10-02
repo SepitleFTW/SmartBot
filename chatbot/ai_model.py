@@ -22,11 +22,7 @@ except Exception as e:
 # API keys from env file
 #openai.api_key = os.getenv('OPENAI_API_KEY')
 huggingface_token = os.getenv('HUGGINGFACE_TOKEN')
-genai.configure(api_key= os.getenv('GEMINI_API_KEY'))
-
-#Initializing the gemini model
-model = genai.GenerativeModel(model_name='gemini-pro-vision')
-
+genai.configure(api_key = os.getenv('GEMINI_API_KEY'))
 
 # Initialize the Hugging Face model
 generator = pipeline('text-generation', model='gpt2', token=huggingface_token, temperature=0.7)
@@ -37,7 +33,7 @@ t5_model_path = '/workspaces/SmartBot/chatbot/ml/trained_models/fine_tuned_t5'
 t5_model = T5ForConditionalGeneration.from_pretrained(t5_model_path)
 t5_tokenizer = T5Tokenizer.from_pretrained(t5_model_path)
 
-
+"""
 # Preprocessing function
 def preprocess_text(text):
     # Lowercase and tokenize text using the 'punkt' tokenizer
@@ -47,6 +43,7 @@ def preprocess_text(text):
     except Exception as e:
         logging.error(f"Error during tokenization: {str(e)}")
         return text  # Return the original text if tokenization fails
+        """ 
 
 # Response generation for Hugging Face model
 def generate_huggingface_response(user_input):
@@ -66,6 +63,7 @@ def generate_huggingface_response(user_input):
     except Exception as e:
         logging.error(f"Error generating Hugging Face response: {str(e)}")
         return f"Error generating Hugging Face response: {str(e)}"
+    
 
 """"
 # Response generation from OpenAI
@@ -84,6 +82,7 @@ def generate_openai_response(user_input):
         logging.error(f"Error generating OpenAI Response: {str(e)}")
         return f"Error generating OpenAI response: {str(e)}"
 """
+
 
 # Generate response using the fine-tuned T5 model
 def generate_t5_response(input_text):
@@ -107,7 +106,12 @@ def generate_t5_response(input_text):
     except Exception as e:
         logging.error(f"Error generating T5 response: {str(e)}")
         return f"Error generating T5 response: {str(e)}"
-    
+
+
+#Initializing the gemini model
+model = genai.GenerativeModel(model_name='gemini-1.5-Flash')
+chat = model.start_chat(history=[])
+
 def generate_gemini_response(user_input):
     """
     calling the gemini API and getting a response
@@ -122,11 +126,9 @@ def generate_response(user_input, model_choice='gemini'):
 
     if model_choice == 'huggingface':
         return generate_huggingface_response(user_input)
-    elif model_choice == 'openai':
-        return generate_openai_response(user_input)
-    elif model_choice == 't5':
-        return generate_t5_response(user_input)
+    
     elif model_choice == 'gemini':
         return generate_gemini_response(user_input)
     else:
         return "Invalid model choice"
+    
